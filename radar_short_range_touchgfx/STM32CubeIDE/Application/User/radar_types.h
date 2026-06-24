@@ -38,8 +38,15 @@ typedef struct
     uint8_t  speed_mode;
 
     uint16_t object_count;
-    uint16_t min_distance_cm;
-    uint16_t last_detect_angle;
+
+    /*
+     * Last detected object information:
+     * - object_count chỉ tăng khi có object mới.
+     * - Nhưng last_object_distance_cm và last_object_angle_deg
+     *   sẽ update mỗi lần radar đang phát hiện được vật.
+     */
+    uint16_t last_object_distance_cm;
+    uint16_t last_object_angle_deg;
 
     uint8_t  buzzer_on;
     uint8_t  led3_on;

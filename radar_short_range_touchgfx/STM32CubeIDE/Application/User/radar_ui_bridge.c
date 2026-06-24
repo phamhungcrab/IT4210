@@ -45,9 +45,9 @@ void RadarUiBridge_Init(void)
     init_data.scan_mode_deg     = RADAR_SCAN_MODE_180_DEG;
     init_data.speed_mode        = RADAR_SPEED_MED;
 
-    init_data.object_count      = 0;
-    init_data.min_distance_cm   = RADAR_MAX_DISPLAY_CM;
-    init_data.last_detect_angle = 0;
+    init_data.object_count            = 0;
+    init_data.last_object_distance_cm = 0;
+    init_data.last_object_angle_deg   = 0;
 
     init_data.buzzer_on         = 0;
     init_data.led3_on           = 0;

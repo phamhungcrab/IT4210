@@ -370,16 +370,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/screensettings_screen/ScreenSettingsView.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/gui/ScreenWarningPresenter.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/screenwarning_screen/ScreenWarningPresenter.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/gui/ScreenWarningView.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/screenwarning_screen/ScreenWarningView.cpp</locationURI>
-		</link>
-		<link>
 			<name>Application/User/generated/ApplicationFontProvider.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/fonts/src/ApplicationFontProvider.cpp</locationURI>
@@ -500,11 +490,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/screensettings_screen/ScreenSettingsViewBase.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/generated/ScreenWarningViewBase.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/screenwarning_screen/ScreenWarningViewBase.cpp</locationURI>
-		</link>
-		<link>
 			<name>Application/User/generated/BitmapDatabase.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/BitmapDatabase.cpp</locationURI>
@@ -550,11 +535,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_bg_settings_radar.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/generated/image_bg_warning_radar.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_bg_warning_radar.cpp</locationURI>
-		</link>
-		<link>
 			<name>Application/User/generated/image_btn_radar_65x36_normal.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_btn_radar_65x36_normal.cpp</locationURI>
@@ -563,11 +543,6 @@
 			<name>Application/User/generated/image_btn_radar_65x36_pressed.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_btn_radar_65x36_pressed.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/generated/image_btn_transparent_65x36.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_btn_transparent_65x36.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/image_icon_back_to_scan_48x48.cpp</name>
@@ -688,31 +663,6 @@
 			<name>Application/User/generated/image_target_dot.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_target_dot.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/generated/image_track0.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_track0.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/generated/image_track1.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_track1.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/generated/image_track2.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_track2.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/generated/image_track3.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_track3.cpp</locationURI>
-		</link>
-		<link>
-			<name>Application/User/generated/image_track4.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_track4.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/LanguageGb.cpp</name>
