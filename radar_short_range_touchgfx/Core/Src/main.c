@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Components/ili9341/ili9341.h"
+#include "hcsr04.h"
+#include "radar_app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -72,6 +74,9 @@ LTDC_HandleTypeDef hltdc;
 
 SPI_HandleTypeDef hspi5;
 
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim5;
+
 SDRAM_HandleTypeDef hsdram1;
 
 /* Definitions for defaultTask */
@@ -90,9 +95,12 @@ const osThreadAttr_t GUI_Task_attributes = {
 };
 /* USER CODE BEGIN PV */
 uint8_t isRevD = 0; /* Applicable only for STM32F429I DISCOVERY REVD and above */
-osMessageQueueId_t GameCtrlQueueHandle;
-const osMessageQueueAttr_t GameCtrlQueue_attributes = {
-  .name = "GameCtrlQueue"
+
+osThreadId_t radarTaskHandle;
+const osThreadAttr_t radarTask_attributes = {
+  .name = "radarTask",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE END PV */
 
@@ -105,10 +113,13 @@ static void MX_SPI5_Init(void);
 static void MX_FMC_Init(void);
 static void MX_LTDC_Init(void);
 static void MX_DMA2D_Init(void);
+static void MX_TIM5_Init(void);
+static void MX_TIM2_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 
 /* USER CODE BEGIN PFP */
+static void StartRadarTask(void *argument);
 static void BSP_SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_CommandTypeDef *Command);
 
 
@@ -182,6 +193,8 @@ int main(void)
   MX_FMC_Init();
   MX_LTDC_Init();
   MX_DMA2D_Init();
+  MX_TIM5_Init();
+  MX_TIM2_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -205,8 +218,7 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  GameCtrlQueueHandle = osMessageQueueNew(8, sizeof(uint8_t), &GameCtrlQueue_attributes);
+  /* Radar project: no game queue needed */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -217,7 +229,7 @@ int main(void)
   GUI_TaskHandle = osThreadNew(TouchGFX_Task, NULL, &GUI_Task_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  radarTaskHandle = osThreadNew(StartRadarTask, NULL, &radarTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -520,6 +532,123 @@ static void MX_SPI5_Init(void)
 
 }
 
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_IC_InitTypeDef sConfigIC = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 89;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 4294967295;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_IC_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
+  * @brief TIM5 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM5_Init(void)
+{
+
+  /* USER CODE BEGIN TIM5_Init 0 */
+
+  /* USER CODE END TIM5_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM5_Init 1 */
+
+  /* USER CODE END TIM5_Init 1 */
+  htim5.Instance = TIM5;
+  htim5.Init.Prescaler = 89;
+  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim5.Init.Period = 19999;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim5, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 1500;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM5_Init 2 */
+
+  /* USER CODE END TIM5_Init 2 */
+  HAL_TIM_MspPostInit(&htim5);
+
+}
+
 /* FMC initialization function */
 static void MX_FMC_Init(void)
 {
@@ -599,10 +728,16 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SPI5_NCS_GPIO_Port, SPI5_NCS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2|BUZZER_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(HCSR04_TRIG_GPIO_Port, HCSR04_TRIG_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOG, LED3_SCAN_Pin|LED4_ALERT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : VSYNC_FREQ_Pin RENDER_TIME_Pin FRAME_RATE_Pin MCU_ACTIVE_Pin */
   GPIO_InitStruct.Pin = VSYNC_FREQ_Pin|RENDER_TIME_Pin|FRAME_RATE_Pin|MCU_ACTIVE_Pin;
@@ -611,12 +746,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : SPI5_NCS_Pin */
-  GPIO_InitStruct.Pin = SPI5_NCS_Pin;
+  /*Configure GPIO pins : SPI5_NCS_Pin BUZZER_Pin */
+  GPIO_InitStruct.Pin = SPI5_NCS_Pin|BUZZER_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SPI5_NCS_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PC2 */
   GPIO_InitStruct.Pin = GPIO_PIN_2;
@@ -625,12 +760,32 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : B1_USER_Pin */
+  GPIO_InitStruct.Pin = B1_USER_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B1_USER_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : HCSR04_TRIG_Pin */
+  GPIO_InitStruct.Pin = HCSR04_TRIG_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(HCSR04_TRIG_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : PD12 PD13 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED3_SCAN_Pin LED4_ALERT_Pin */
+  GPIO_InitStruct.Pin = LED3_SCAN_Pin|LED4_ALERT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* PG2, PG3: button input with pull-up */
@@ -642,6 +797,19 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+    HCSR04_TIM_IC_CaptureCallback(htim);
+}
+static void StartRadarTask(void *argument)
+{
+  RadarApp_Init();
+
+  for (;;)
+  {
+    RadarApp_TaskLoop();
+  }
+}
 /**
   * @brief  Perform the SDRAM external memory initialization sequence
   * @param  hsdram: SDRAM handle
@@ -977,32 +1145,51 @@ void LCD_Delay(uint32_t Delay)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-	for(;;)
-	{
-	    static GPIO_PinState lastLeft = GPIO_PIN_SET;
-	    static GPIO_PinState lastRight = GPIO_PIN_SET;
+  GPIO_PinState last_state = GPIO_PIN_RESET;
+  uint32_t press_start_ms = 0;
+  uint8_t long_handled = 0;
 
-	    GPIO_PinState nowLeft = HAL_GPIO_ReadPin(GPIOG, GPIO_PIN_2);
-	    GPIO_PinState nowRight = HAL_GPIO_ReadPin(GPIOG, GPIO_PIN_3);
+  for (;;)
+  {
+    GPIO_PinState now = HAL_GPIO_ReadPin(B1_USER_GPIO_Port, B1_USER_Pin);
 
-	    if ((lastLeft == GPIO_PIN_SET) && (nowLeft == GPIO_PIN_RESET))
-	    {
-	        uint8_t cmd = 'L';
-	        osMessageQueuePut(GameCtrlQueueHandle, &cmd, 0, 0);
-	    }
+    /*
+     * B1 trên STM32F429I-DISC1:
+     * Không bấm = RESET
+     * Bấm      = SET
+     */
 
-	    if ((lastRight == GPIO_PIN_SET) && (nowRight == GPIO_PIN_RESET))
-	    {
-	        uint8_t cmd = 'R';
-	        osMessageQueuePut(GameCtrlQueueHandle, &cmd, 0, 0);
-	    }
+    if (now == GPIO_PIN_SET && last_state == GPIO_PIN_RESET)
+    {
+      press_start_ms = HAL_GetTick();
+      long_handled = 0;
+    }
 
-	    lastLeft = nowLeft;
-	    lastRight = nowRight;
+    if (now == GPIO_PIN_SET && last_state == GPIO_PIN_SET)
+    {
+      uint32_t held_ms = HAL_GetTick() - press_start_ms;
 
-	    osDelay(20);
-	}
+      if (held_ms >= 800U && !long_handled)
+      {
+        RadarApp_ToggleScanMode();   // giữ lâu: đổi 180 độ <-> 90 độ
+        long_handled = 1;
+      }
+    }
+
+    if (now == GPIO_PIN_RESET && last_state == GPIO_PIN_SET)
+    {
+      uint32_t held_ms = HAL_GetTick() - press_start_ms;
+
+      if (held_ms >= 30U && held_ms < 800U && !long_handled)
+      {
+        RadarApp_NextSpeedMode();    // bấm ngắn: SLOW -> MED -> FAST
+      }
+    }
+
+    last_state = now;
+
+    osDelay(20);
+  }
   /* USER CODE END 5 */
 }
 

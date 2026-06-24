@@ -25,7 +25,9 @@
               "Blue": 17
             },
             "Wildcard1": {
-              "TextId": "range"
+              "TextId": "lastRange",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -56,7 +58,9 @@
               "Blue": 17
             },
             "Wildcard1": {
-              "TextId": "objectCount"
+              "TextId": "objectCount",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -73,7 +77,9 @@
               "Blue": 17
             },
             "Wildcard1": {
-              "TextId": "lastAngle"
+              "TextId": "lastAngle",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -131,7 +137,9 @@
               "Blue": 17
             },
             "Wildcard1": {
-              "TextId": "scanMode"
+              "TextId": "scanMode",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -148,7 +156,9 @@
               "Blue": 17
             },
             "Wildcard1": {
-              "TextId": "speedMode"
+              "TextId": "speedMode",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           }
         ],
@@ -325,10 +335,14 @@
             },
             "AutoSize": true,
             "Wildcard1": {
-              "TextId": "speedMode"
+              "TextId": "speedMode",
+              "UseBuffer": true,
+              "BufferSize": 10
             },
             "Wildcard2": {
-              "TextId": "scanMode"
+              "TextId": "scanMode",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -389,19 +403,6 @@
         ]
       },
       {
-        "Name": "ScreenWarning",
-        "Components": [
-          {
-            "Type": "Image",
-            "Name": "imgWarningBg",
-            "Width": 240,
-            "Height": 320,
-            "RelativeFilename": "bg_warning_radar.png"
-          }
-        ],
-        "Interactions": []
-      },
-      {
         "Name": "ScreenScan",
         "Components": [
           {
@@ -433,7 +434,7 @@
             "LockBitmapToCenter": true,
             "Scale": 1.0,
             "XOrigo": 100.0,
-            "YOrigo": 140.0,
+            "YOrigo": 129.0,
             "ZOrigo": 1000.0,
             "CameraDistance": 1000.0
           },
@@ -451,7 +452,7 @@
             "LockBitmapToCenter": true,
             "Scale": 1.0,
             "XOrigo": 100.0,
-            "YOrigo": 140.0,
+            "YOrigo": 129.0,
             "ZOrigo": 1000.0,
             "CameraDistance": 1000.0
           },
@@ -479,7 +480,9 @@
             },
             "AutoSize": true,
             "Wildcard1": {
-              "TextId": "currentAngle"
+              "TextId": "currentAngle",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -496,7 +499,9 @@
             },
             "AutoSize": true,
             "Wildcard1": {
-              "TextId": "currentDistance"
+              "TextId": "currentDistance",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -513,7 +518,9 @@
             },
             "AutoSize": true,
             "Wildcard1": {
-              "TextId": "radarStatus"
+              "TextId": "radarStatus",
+              "UseBuffer": true,
+              "BufferSize": 10
             }
           },
           {
@@ -598,6 +605,15 @@
             "IconX": 97,
             "IconHeight": 50,
             "IconWidth": 50
+          },
+          {
+            "Type": "Image",
+            "Name": "image1",
+            "X": 118,
+            "Y": 182,
+            "Width": 4,
+            "Height": 4,
+            "RelativeFilename": "red_dot_4x4_transparent.png"
           }
         ],
         "Interactions": [

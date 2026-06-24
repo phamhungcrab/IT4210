@@ -32,7 +32,7 @@
       <Text Id="objectCount" Alignment="Left" TypographyId="Small">
         <Translation Language="GB">000</Translation>
       </Text>
-      <Text Id="range" Alignment="Left" TypographyId="Small">
+      <Text Id="lastRange" Alignment="Left" TypographyId="Small">
         <Translation Language="GB">150 cm</Translation>
       </Text>
       <Text Id="speedMode" Alignment="Left" TypographyId="Small">
@@ -42,28 +42,28 @@
         <Translation Language="GB">180 deg</Translation>
       </Text>
       <Text Id="__SingleUse_Z67U" Alignment="Center" TypographyId="Small">
-        <Translation Language="GB">Range: &lt;range&gt;</Translation>
+        <Translation Language="GB">RANGE: &lt;lastRange&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_DXG0" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">Thầy Tiến 10 điểm</Translation>
       </Text>
       <Text Id="__SingleUse_UOX4" Alignment="Center" TypographyId="Small">
-        <Translation Language="GB">Objects: &lt;objectCount&gt;</Translation>
+        <Translation Language="GB">OBJECTS: &lt;objectCount&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_VQFR" Alignment="Center" TypographyId="Small">
-        <Translation Language="GB">Speed: &lt;speedMode&gt;</Translation>
+        <Translation Language="GB">SPEED: &lt;speedMode&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_K48K" Alignment="Center" TypographyId="Small">
-        <Translation Language="GB">Last angle: &lt;lastAngle&gt;</Translation>
+        <Translation Language="GB">LAST ANGLE: &lt;lastAngle&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_HYEC" Alignment="Center" TypographyId="Small">
-        <Translation Language="GB">Scan: &lt;scanMode&gt;</Translation>
+        <Translation Language="GB">MODE: &lt;scanMode&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_9PS9" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">SYSTEM INFO</Translation>
       </Text>
       <Text Id="__SingleUse_QO2I" Alignment="Left" TypographyId="Small">
-        <Translation Language="GB">SPEED: &lt;value&gt; | MODE: &lt;value&gt;</Translation>
+        <Translation Language="GB">SPEED: &lt;speedMode&gt; | MODE: &lt;speedMode&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_3RNH" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">90 độ</Translation>
