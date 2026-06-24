@@ -330,11 +330,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/model/Model.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/gui/Screen1View.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/screen1_screen/Screen1View.cpp</locationURI>
-		</link>
-		<link>
 			<name>Application/User/gui/ScreenHomePresenter.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/screenhome_screen/ScreenHomePresenter.cpp</locationURI>
@@ -668,6 +663,11 @@
 			<name>Application/User/generated/image_radar_grid_90_no_degree.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_radar_grid_90_no_degree.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/image_red_dot_4x4_transparent.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/image_red_dot_4x4_transparent.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/image_redcar.cpp</name>
