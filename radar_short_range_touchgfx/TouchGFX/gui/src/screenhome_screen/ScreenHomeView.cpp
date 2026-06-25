@@ -3,6 +3,7 @@
 extern "C"
 {
 #include "radar_app.h"
+#include "radar_debug.h"
 }
 
 ScreenHomeView::ScreenHomeView()
@@ -14,12 +15,8 @@ void ScreenHomeView::setupScreen()
 {
     ScreenHomeViewBase::setupScreen();
 
-    /*
-     * Vào Home thì dừng radar:
-     * - servo về 90 độ
-     * - tắt buzzer
-     * - tắt LED alert
-     */
+    RadarDebug_Printf("[UI] ENTER ScreenHome -> RadarApp_Stop\r\n");
+
     RadarApp_Stop();
 }
 

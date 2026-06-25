@@ -9,7 +9,7 @@
 #include "servo_mg90s.h"
 #include "hcsr04.h"
 #include "buzzer_led.h"
-
+#include "radar_debug.h"
 /*
  * radar_app.c
  *
@@ -339,6 +339,30 @@ void RadarApp_TaskLoop(void)
 
         RadarApp_FillStoppedData(&data, speed_mode, scan_mode);
         RadarUiBridge_SetData(&data);
+
+        static uint32_t debug_last_tick = 0;
+
+        uint32_t debug_now = HAL_GetTick();
+
+        if ((debug_now - debug_last_tick) >= 500U)
+        {
+            debug_last_tick = debug_now;
+
+            RadarDebug_Printf("RADAR en=%u angle=%u valid=%u dist=%u\r\n",
+                              data.radar_enabled,
+                              data.angle_deg,
+                              data.distance_valid,
+                              data.distance_cm);
+
+            RadarDebug_Printf("      detect=%u near=%u status=%u obj=%u lastDist=%u lastAng=%u\r\n",
+                              data.object_detected,
+                              data.near_warning,
+                              data.radar_status,
+                              data.object_count,
+                              data.last_object_distance_cm,
+                              data.last_object_angle_deg);
+        }
+
 
         vTaskDelay(pdMS_TO_TICKS(100));
         return;

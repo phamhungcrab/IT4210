@@ -8,6 +8,7 @@ extern "C"
 #include "radar_ui_bridge.h"
 #include "radar_config.h"
 #include "radar_types.h"
+#include "radar_debug.h"
 }
 
 #ifndef M_PI
@@ -26,10 +27,16 @@ void ScreenScanView::setupScreen()
 
     tickCounter = 0;
 
-    /*
-     * Vào màn Scan thì bật radar thật.
-     */
+    RadarDebug_Printf("[UI] ENTER ScreenScan -> RadarApp_Start\r\n");
+
     RadarApp_Start();
+
+    RadarUiData_t dbg;
+    RadarUiBridge_GetData(&dbg);
+    RadarDebug_Printf("[UI] After Start: en=%u speed=%u mode=%u\r\n",
+                      dbg.radar_enabled,
+                      dbg.speed_mode,
+                      dbg.scan_mode_deg);
 
     txtrSweepGreen.setVisible(true);
     txtrSweepRed.setVisible(false);

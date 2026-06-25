@@ -64,9 +64,34 @@ void RadarUiBridge_SetData(const RadarUiData_t *data)
         return;
     }
 
-    RadarUiBridge_EnterCritical();
+    __disable_irq();
+
+    /*
+     * Giữ lại các biến điều khiển do UI/Button set.
+     *
+     * Lý do:
+     * RadarApp_TaskLoop cập nhật sensor data liên tục.
+     * ScreenScan/ScreenHome/Settings cũng cập nhật enabled/speed/mode.
+     *
+     * Nếu SetData ghi đè toàn bộ struct, có thể xảy ra lỗi:
+     * - UI vừa gọi RadarApp_Start() set enabled = 1
+     * - Task đang giữ bản data cũ enabled = 0
+     * - Task SetData lại làm enabled tụt về 0
+     *
+     * Vì vậy SetData chỉ nên update dữ liệu đo/hiển thị,
+     * còn 3 biến control phải giữ theo state hiện tại.
+     */
+    uint8_t keep_enabled = g_radar_ui_data.radar_enabled;
+    uint8_t keep_speed   = g_radar_ui_data.speed_mode;
+    uint8_t keep_mode    = g_radar_ui_data.scan_mode_deg;
+
     g_radar_ui_data = *data;
-    RadarUiBridge_ExitCritical();
+
+    g_radar_ui_data.radar_enabled = keep_enabled;
+    g_radar_ui_data.speed_mode    = keep_speed;
+    g_radar_ui_data.scan_mode_deg = keep_mode;
+
+    __enable_irq();
 }
 
 void RadarUiBridge_GetData(RadarUiData_t *data)
