@@ -18,7 +18,7 @@
         <Translation Language="GB">042 cm</Translation>
       </Text>
       <Text Id="currentAngle" Alignment="Left" TypographyId="Default">
-        <Translation Language="GB">065 deg</Translation>
+        <Translation Language="GB">65</Translation>
       </Text>
       <Text Id="lastAngle" Alignment="Left" TypographyId="Small">
         <Translation Language="GB">65</Translation>
@@ -39,7 +39,7 @@
         <Translation Language="GB">MED</Translation>
       </Text>
       <Text Id="scanMode" Alignment="Left" TypographyId="Small">
-        <Translation Language="GB">180 deg</Translation>
+        <Translation Language="GB">180</Translation>
       </Text>
       <Text Id="__SingleUse_Z67U" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">RANGE: &lt;lastRange&gt;</Translation>
@@ -63,7 +63,7 @@
         <Translation Language="GB">SYSTEM INFO</Translation>
       </Text>
       <Text Id="__SingleUse_QO2I" Alignment="Left" TypographyId="Small">
-        <Translation Language="GB">SPEED: &lt;speedMode&gt; | MODE: &lt;speedMode&gt;</Translation>
+        <Translation Language="GB">SPEED: &lt;speedMode&gt; | MODE: &lt;speedMode&gt;°</Translation>
       </Text>
       <Text Id="__SingleUse_3RNH" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">90 độ</Translation>
@@ -95,8 +95,8 @@
       <Text Id="__SingleUse_69AA" Alignment="Left" TypographyId="Small">
         <Translation Language="GB">&lt;currentDistance&gt;</Translation>
       </Text>
-      <Text Id="__SingleUse_GT9N" Alignment="Left" TypographyId="Small">
-        <Translation Language="GB">&lt;currentAngle&gt;</Translation>
+      <Text Id="__SingleUse_GT9N" Alignment="Center" TypographyId="Small">
+        <Translation Language="GB">&lt;currentAngle&gt;°</Translation>
       </Text>
       <Text Id="__SingleUse_VLQL" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">Info</Translation>
@@ -121,6 +121,6 @@
   <Typographies>
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
-    <Typography Id="Small" Font="verdana.ttf" Size="12" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Small" Font="verdana.ttf" Size="12" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz -:|/°" WildcardCharacterRanges="0-9,A-Z,a-z" />
   </Typographies>
 </TextDatabase>

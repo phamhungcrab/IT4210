@@ -325,7 +325,7 @@
             "Name": "txtCurrentConfig",
             "X": 33,
             "Y": 279,
-            "Width": 183,
+            "Width": 165,
             "Height": 15,
             "TextId": "__SingleUse_QO2I",
             "TextRotation": "0",
@@ -471,16 +471,15 @@
           {
             "Type": "TextArea",
             "Name": "txtAngleValue",
-            "X": 21,
+            "X": 28,
             "Y": 282,
-            "Width": 49,
+            "Width": 35,
             "Height": 15,
             "TextId": "__SingleUse_GT9N",
             "TextRotation": "0",
             "Color": {
               "Red": 255
             },
-            "AutoSize": true,
             "Wildcard1": {
               "TextId": "currentAngle",
               "UseBuffer": true,

@@ -74,7 +74,7 @@ void ScreenScanView::updateRadarUi()
      */
     Unicode::snprintf(txtAngleValueBuffer,
                       TXTANGLEVALUE_SIZE,
-                      "%03u deg",
+                      "%03u",
                       data.angle_deg);
     txtAngleValue.invalidate();
 
