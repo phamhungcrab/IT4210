@@ -33,6 +33,92 @@ static int8_t  g_direction = 1;
 static uint8_t g_prev_detected = 0;
 static uint8_t g_scan_led_state = 0;
 
+static void Debug_PA1_LED_Test(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    /*
+     * PA1 ép GPIO output push-pull.
+     * Không PWM, không TIM5.
+     */
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    RadarDebug_Printf("PA1 FORCE TEST START - remove all wires from PA1 first\r\n");
+
+    for (;;)
+    {
+        GPIOA->BSRR = GPIO_PIN_1;
+        vTaskDelay(pdMS_TO_TICKS(500));
+
+        RadarDebug_Printf(
+            "PA1 FORCE HIGH MODER=%u ODR=%u IDR=%u\r\n",
+            (unsigned int)((GPIOA->MODER >> (1U * 2U)) & 0x3U),
+            (unsigned int)((GPIOA->ODR & GPIO_PIN_1) ? 1U : 0U),
+            (unsigned int)((GPIOA->IDR & GPIO_PIN_1) ? 1U : 0U)
+        );
+
+        GPIOA->BSRR = ((uint32_t)GPIO_PIN_1 << 16U);
+        vTaskDelay(pdMS_TO_TICKS(500));
+
+        RadarDebug_Printf(
+            "PA1 FORCE LOW  MODER=%u ODR=%u IDR=%u\r\n",
+            (unsigned int)((GPIOA->MODER >> (1U * 2U)) & 0x3U),
+            (unsigned int)((GPIOA->ODR & GPIO_PIN_1) ? 1U : 0U),
+            (unsigned int)((GPIOA->IDR & GPIO_PIN_1) ? 1U : 0U)
+        );
+    }
+}
+
+
+static void Debug_PA2_LED_Test(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_2;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    RadarDebug_Printf("PA2 LED TEST START\r\n");
+
+    for (;;)
+    {
+        GPIOA->BSRR = GPIO_PIN_2;
+        vTaskDelay(pdMS_TO_TICKS(500));
+
+        RadarDebug_Printf(
+            "PA2 HIGH MODER=%u ODR=%u IDR=%u\r\n",
+            (unsigned int)((GPIOA->MODER >> (2U * 2U)) & 0x3U),
+            (unsigned int)((GPIOA->ODR & GPIO_PIN_2) ? 1U : 0U),
+            (unsigned int)((GPIOA->IDR & GPIO_PIN_2) ? 1U : 0U)
+        );
+
+        GPIOA->BSRR = ((uint32_t)GPIO_PIN_2 << 16U);
+        vTaskDelay(pdMS_TO_TICKS(500));
+
+        RadarDebug_Printf(
+            "PA2 LOW  MODER=%u ODR=%u IDR=%u\r\n",
+            (unsigned int)((GPIOA->MODER >> (2U * 2U)) & 0x3U),
+            (unsigned int)((GPIOA->ODR & GPIO_PIN_2) ? 1U : 0U),
+            (unsigned int)((GPIOA->IDR & GPIO_PIN_2) ? 1U : 0U)
+        );
+    }
+}
+
+
 /* ================= Internal helper functions ================= */
 
 static uint16_t RadarApp_GetMinAngle(uint8_t scan_mode_deg)
@@ -214,7 +300,7 @@ static void RadarApp_FillStoppedData(RadarUiData_t *data, uint8_t speed_mode, ui
 void RadarApp_Init(void)
 {
     RadarUiBridge_Init();
-
+    Debug_PA2_LED_Test();
     Servo_Init();
 
     RadarDebug_Printf("SERVO TEST START\r\n");
