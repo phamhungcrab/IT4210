@@ -9,11 +9,24 @@ static volatile uint16_t g_last_pulse_us = SERVO_CENTER_PULSE_US;
 
 void Servo_Init(void)
 {
-    /*
-     * PA1 = TIM5_CH2
-     * TIM5: PSC=89, ARR=19999 => 1 tick = 1us, period = 20ms
-     */
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+    /*
+     * Ép lại PA1 = TIM5_CH2.
+     * Tránh trường hợp PA1 bị code khác/CubeMX generate làm sai mode.
+     */
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    GPIO_InitStruct.Pin = GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF2_TIM5;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /*
+     * TIM5: 1 tick = 1us, period = 20ms.
+     */
     HAL_TIM_PWM_Stop(&htim5, TIM_CHANNEL_2);
 
     __HAL_TIM_DISABLE(&htim5);

@@ -460,10 +460,10 @@ void RadarApp_TaskLoop(void)
     /*
      * 7. LED / buzzer.
      */
-    g_scan_led_state = 0;
-    /* PG13/PG14 đang dùng cho HCSR04 test, không dùng LED3/LED4 */
+    g_scan_led_state = !g_scan_led_state;
+    LedScan_Set(g_scan_led_state);
 
-    Buzzer_Set(near_warning);
+    Alert_Update(detected, near_warning);
 
     /*
      * 8. Ghi dữ liệu mới sang bridge cho TouchGFX đọc.
@@ -497,8 +497,8 @@ void RadarApp_TaskLoop(void)
     }
 
     data.buzzer_on = near_warning ? 1U : 0U;
-    data.led3_on   = 0;
-    data.led4_on   = 0;
+    data.led3_on   = g_scan_led_state ? 1U : 0U;
+    data.led4_on   = (detected || near_warning) ? 1U : 0U;
 
     /*
      * OLED chưa ghép ở bước này.

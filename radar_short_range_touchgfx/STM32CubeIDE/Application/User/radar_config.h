@@ -46,7 +46,7 @@ extern "C" {
 
 /* ===== HC-SR04 ===== */
 #define HCSR04_TRIGGER_PULSE_US          10U
-#define HCSR04_TIMEOUT_MS                15U
+#define HCSR04_TIMEOUT_MS                25U
 
 /* ===== UI geometry for target dot ===== */
 #define RADAR_UI_CENTER_X                120
