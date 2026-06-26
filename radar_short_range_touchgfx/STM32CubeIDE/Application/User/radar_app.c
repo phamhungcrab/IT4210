@@ -216,6 +216,25 @@ void RadarApp_Init(void)
     RadarUiBridge_Init();
 
     Servo_Init();
+
+    RadarDebug_Printf("SERVO TEST START\r\n");
+
+    Servo_SetAngle(0);
+    RadarDebug_Printf("SERVO angle=0 pulse=%u\r\n", Servo_GetLastPulseUs());
+    vTaskDelay(pdMS_TO_TICKS(1000));
+
+    Servo_SetAngle(90);
+    RadarDebug_Printf("SERVO angle=90 pulse=%u\r\n", Servo_GetLastPulseUs());
+    vTaskDelay(pdMS_TO_TICKS(1000));
+
+    Servo_SetAngle(180);
+    RadarDebug_Printf("SERVO angle=180 pulse=%u\r\n", Servo_GetLastPulseUs());
+    vTaskDelay(pdMS_TO_TICKS(1000));
+
+    Servo_SetAngle(90);
+    RadarDebug_Printf("SERVO angle=90 pulse=%u\r\n", Servo_GetLastPulseUs());
+    vTaskDelay(pdMS_TO_TICKS(1000));
+
     BuzzerLed_Init();
     HCSR04_Init();
 

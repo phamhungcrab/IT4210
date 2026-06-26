@@ -7,8 +7,8 @@ extern "C" {
 
 /* ===== Distance config ===== */
 #define RADAR_MIN_DISTANCE_CM            2U
-#define RADAR_MAX_DISPLAY_CM             100U
-#define RADAR_OBJECT_DETECT_CM           100U
+#define RADAR_MAX_DISPLAY_CM             50U
+#define RADAR_OBJECT_DETECT_CM           50U
 #define RADAR_NEAR_WARNING_CM            10U
 
 /* ===== Servo MG90S PWM config =====
@@ -20,9 +20,9 @@ extern "C" {
 #define SERVO_CENTER_ANGLE_DEG           90U
 #define SERVO_MAX_ANGLE_DEG              180U
 
-#define SERVO_MIN_PULSE_US               500U
+#define SERVO_MIN_PULSE_US               1000U
 #define SERVO_CENTER_PULSE_US            1500U
-#define SERVO_MAX_PULSE_US               2500U
+#define SERVO_MAX_PULSE_US               2000U
 
 /* ===== Scan modes ===== */
 #define RADAR_SCAN_MODE_90_DEG           90U

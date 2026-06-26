@@ -508,16 +508,15 @@
           {
             "Type": "TextArea",
             "Name": "txtStatusValue",
-            "X": 174,
+            "X": 162,
             "Y": 282,
-            "Width": 33,
+            "Width": 60,
             "Height": 15,
             "TextId": "__SingleUse_3XPP",
             "TextRotation": "0",
             "Color": {
               "Red": 255
             },
-            "AutoSize": true,
             "Wildcard1": {
               "TextId": "radarStatus",
               "UseBuffer": true,

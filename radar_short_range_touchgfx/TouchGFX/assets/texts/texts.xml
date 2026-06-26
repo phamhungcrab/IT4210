@@ -89,7 +89,7 @@
       <Text Id="__SingleUse_54LM" Alignment="Center" TypographyId="Small">
         <Translation Language="GB"></Translation>
       </Text>
-      <Text Id="__SingleUse_3XPP" Alignment="Left" TypographyId="Small">
+      <Text Id="__SingleUse_3XPP" Alignment="Center" TypographyId="Small">
         <Translation Language="GB">&lt;radarStatus&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_69AA" Alignment="Left" TypographyId="Small">
