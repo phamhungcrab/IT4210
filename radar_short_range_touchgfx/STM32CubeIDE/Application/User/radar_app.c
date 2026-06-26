@@ -119,6 +119,47 @@ static void Debug_PA2_LED_Test(void)
 }
 
 
+static void Debug_PB4_LED_Test(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    RadarDebug_Printf("PB4 LED TEST START\r\n");
+
+    for (;;)
+    {
+        GPIOB->BSRR = GPIO_PIN_4;
+        vTaskDelay(pdMS_TO_TICKS(500));
+
+        RadarDebug_Printf(
+            "PB4 HIGH MODER=%u ODR=%u IDR=%u\r\n",
+            (unsigned int)((GPIOB->MODER >> (4U * 2U)) & 0x3U),
+            (unsigned int)((GPIOB->ODR & GPIO_PIN_4) ? 1U : 0U),
+            (unsigned int)((GPIOB->IDR & GPIO_PIN_4) ? 1U : 0U)
+        );
+
+        GPIOB->BSRR = ((uint32_t)GPIO_PIN_4 << 16U);
+        vTaskDelay(pdMS_TO_TICKS(500));
+
+        RadarDebug_Printf(
+            "PB4 LOW  MODER=%u ODR=%u IDR=%u\r\n",
+            (unsigned int)((GPIOB->MODER >> (4U * 2U)) & 0x3U),
+            (unsigned int)((GPIOB->ODR & GPIO_PIN_4) ? 1U : 0U),
+            (unsigned int)((GPIOB->IDR & GPIO_PIN_4) ? 1U : 0U)
+        );
+    }
+}
+
+
 /* ================= Internal helper functions ================= */
 
 static uint16_t RadarApp_GetMinAngle(uint8_t scan_mode_deg)
@@ -300,7 +341,7 @@ static void RadarApp_FillStoppedData(RadarUiData_t *data, uint8_t speed_mode, ui
 void RadarApp_Init(void)
 {
     RadarUiBridge_Init();
-    Debug_PA2_LED_Test();
+//    Debug_PB4_LED_Test();
     Servo_Init();
 
     RadarDebug_Printf("SERVO TEST START\r\n");

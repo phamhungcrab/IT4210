@@ -2,7 +2,7 @@
 #include "main.h"
 #include "radar_config.h"
 
-extern TIM_HandleTypeDef htim5;
+extern TIM_HandleTypeDef htim3;
 
 static volatile uint16_t g_last_angle = SERVO_CENTER_ANGLE_DEG;
 static volatile uint16_t g_last_pulse_us = SERVO_CENTER_PULSE_US;
@@ -12,34 +12,32 @@ void Servo_Init(void)
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     /*
-     * Ép lại PA1 = TIM5_CH2.
-     * Tránh trường hợp PA1 bị code khác/CubeMX generate làm sai mode.
+     * Servo signal = PB4 = TIM3_CH1
+     * TIM3: PSC=89, ARR=19999 => 1 tick = 1us, period = 20ms
      */
-    __HAL_RCC_GPIOA_CLK_ENABLE();
 
-    GPIO_InitStruct.Pin = GPIO_PIN_1;
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF2_TIM5;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-    /*
-     * TIM5: 1 tick = 1us, period = 20ms.
-     */
-    HAL_TIM_PWM_Stop(&htim5, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
 
-    __HAL_TIM_DISABLE(&htim5);
+    __HAL_TIM_DISABLE(&htim3);
 
-    __HAL_TIM_SET_PRESCALER(&htim5, 89);
-    __HAL_TIM_SET_AUTORELOAD(&htim5, 19999);
-    __HAL_TIM_SET_COUNTER(&htim5, 0);
+    __HAL_TIM_SET_PRESCALER(&htim3, 89);
+    __HAL_TIM_SET_AUTORELOAD(&htim3, 19999);
+    __HAL_TIM_SET_COUNTER(&htim3, 0);
 
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, SERVO_CENTER_PULSE_US);
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, SERVO_CENTER_PULSE_US);
 
-    HAL_TIM_GenerateEvent(&htim5, TIM_EVENTSOURCE_UPDATE);
+    HAL_TIM_GenerateEvent(&htim3, TIM_EVENTSOURCE_UPDATE);
 
-    if (HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2) != HAL_OK)
+    if (HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1) != HAL_OK)
     {
         Error_Handler();
     }
@@ -61,7 +59,7 @@ void Servo_SetPulseUs(uint16_t pulse_us)
 
     g_last_pulse_us = pulse_us;
 
-    __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_2, pulse_us);
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pulse_us);
 }
 
 void Servo_SetAngle(uint16_t angle_deg)
