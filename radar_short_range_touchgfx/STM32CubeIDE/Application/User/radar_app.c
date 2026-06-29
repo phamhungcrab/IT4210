@@ -574,27 +574,51 @@ void RadarApp_ToggleScanMode(void)
 //     */
 //    vTaskDelay(pdMS_TO_TICKS(RADAR_LOOP_IDLE_MS));
 //}
+
+
 void RadarApp_TaskLoop(void)
 {
-    Servo_SetPulseUs(1500);
-    RadarDebug_Printf("SERVO TEST pulse=1500 STOP\r\n");
-    vTaskDelay(pdMS_TO_TICKS(2000));
+    static uint32_t log_tick_ms = 0U;
+    static uint32_t led_tick_ms = 0U;
+    static uint8_t led_state = 0U;
 
-    Servo_SetPulseUs(1000);
-    RadarDebug_Printf("SERVO TEST pulse=1000 DIR A\r\n");
-    vTaskDelay(pdMS_TO_TICKS(3000));
+    RadarUiData_t data;
+    uint32_t now = HAL_GetTick();
 
-    Servo_SetPulseUs(1500);
-    RadarDebug_Printf("SERVO TEST pulse=1500 STOP\r\n");
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    Servo_SetPulseUs(1500U);
 
-    Servo_SetPulseUs(2000);
-    RadarDebug_Printf("SERVO TEST pulse=2000 DIR B\r\n");
-    vTaskDelay(pdMS_TO_TICKS(3000));
+    if ((now - log_tick_ms) >= 500U)
+    {
+        log_tick_ms = now;
 
-    Servo_SetPulseUs(1500);
-    RadarDebug_Printf("SERVO TEST pulse=1500 STOP\r\n");
-    vTaskDelay(pdMS_TO_TICKS(1000));
+        RadarDebug_Printf("[SERVO_HOLD_1500] actual=%u\r\n",
+                          (unsigned int)Servo_GetLastPulseUs());
+    }
 
-    return;
+    if ((now - led_tick_ms) >= 500U)
+    {
+        led_tick_ms = now;
+        led_state = !led_state;
+        LedScan_Set(led_state);
+    }
+
+    RadarUiBridge_GetData(&data);
+
+    data.radar_enabled = 1U;
+    data.angle_deg = 90U;
+    data.distance_cm = Servo_GetLastPulseUs();
+    data.distance_valid = 1U;
+    data.object_detected = 0U;
+    data.near_warning = 0U;
+    data.radar_status = RADAR_STATUS_SCAN;
+    data.speed_mode = RADAR_SPEED_SLOW;
+    data.scan_mode_deg = RADAR_SCAN_MODE_180_DEG;
+    data.buzzer_on = 0U;
+    data.led3_on = led_state ? 1U : 0U;
+    data.led4_on = 0U;
+    data.oled_connected = 0U;
+
+    RadarUiBridge_SetData(&data);
+
+    vTaskDelay(pdMS_TO_TICKS(20));
 }

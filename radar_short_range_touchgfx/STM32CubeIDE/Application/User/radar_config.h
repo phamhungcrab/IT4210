@@ -54,27 +54,45 @@ extern "C" {
 #define RADAR_UI_RADIUS_PX               90
 #define RADAR_TARGET_HALF_SIZE_PX        10
 
-/* ===== Servo 360 continuous calibration =====
- * Servo 360:
- * - STOP_US: chỉnh đến khi servo đứng yên thật.
- * - CW/CCW pulse chỉ lệch nhẹ khỏi STOP để quay êm.
+/* ===== Servo 360 continuous calibration ===== */
+
+/*
+ * Điểm dừng thật.
+ * Chỉnh cái này trước tiên.
  */
 #define SERVO_360_STOP_US               1500U
 
-#define SERVO_360_SLOW_DELTA_US         35U
-#define SERVO_360_MED_DELTA_US          55U
-#define SERVO_360_FAST_DELTA_US         80U
+/*
+ * Độ lệch khỏi STOP để quay.
+ * Chỉnh sau khi STOP_US đã đứng yên.
+ */
+#define SERVO_360_SLOW_DELTA_US         25U
+#define SERVO_360_MED_DELTA_US          45U
+#define SERVO_360_FAST_DELTA_US         65U
 
 /*
- * Góc ảo dùng để đồng bộ UI với thời gian quay.
- * Cần calib thực tế:
- * đặt vật đánh dấu trên trục, xem mỗi bước quay được bao nhiêu.
+ * Test mode cho RadarApp_TaskLoop.
+ * 1 = chỉ test servo, không đo SR04.
+ * 0 = quay lại radar bình thường.
  */
-#define SERVO_360_SLOW_MOVE_MS          90U
-#define SERVO_360_MED_MOVE_MS           70U
-#define SERVO_360_FAST_MOVE_MS          55U
+#define SERVO_TEST_ONLY_MODE            1U
 
-#define SERVO_360_SETTLE_MS             80U
+/*
+ * Mỗi pha test giữ bao lâu.
+ */
+#define SERVO_TEST_PHASE_MS             2500U
+
+
+/* ===== Servo threshold scan test ===== */
+#define SERVO_THRESHOLD_TEST_MODE       0U
+
+#define SERVO_TEST_MIN_US               900U
+#define SERVO_TEST_MAX_US               1400U
+#define SERVO_TEST_STEP_US              100U
+#define SERVO_TEST_HOLD_MS              2000U
+
+#define SERVO_DIR_TEST_MODE             1U
+#define SERVO_DIR_TEST_PHASE_MS         3000U
 
 #ifdef __cplusplus
 }

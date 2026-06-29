@@ -48,6 +48,7 @@ static volatile uint16_t g_last_pulse_us = SERVO_360_STOP_US;
 
 static TaskHandle_t g_servo_pwm_task_handle = NULL;
 static uint32_t g_cycles_per_us = 0;
+static volatile uint32_t g_pwm_frame_count = 0;
 
 static void Servo_DWT_Init(void)
 {
@@ -86,6 +87,8 @@ static void Servo_PWM_Task(void *argument)
 
     for (;;)
     {
+    	g_pwm_frame_count++;
+
         uint16_t pulse_us = g_last_pulse_us;
         uint32_t low_us;
 
@@ -245,4 +248,8 @@ uint16_t Servo_GetLastAngle(void)
 uint16_t Servo_GetLastPulseUs(void)
 {
     return g_last_pulse_us;
+}
+uint32_t Servo_GetPwmFrameCount(void)
+{
+    return g_pwm_frame_count;
 }

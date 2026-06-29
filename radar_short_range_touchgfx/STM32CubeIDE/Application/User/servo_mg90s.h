@@ -35,6 +35,8 @@ void Servo_Stop(void);
 uint16_t Servo_GetLastAngle(void);
 uint16_t Servo_GetLastPulseUs(void);
 
+uint32_t Servo_GetPwmFrameCount(void);
+
 #ifdef __cplusplus
 }
 #endif
