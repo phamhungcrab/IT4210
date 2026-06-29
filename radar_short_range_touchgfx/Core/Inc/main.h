@@ -72,14 +72,19 @@ void Error_Handler(void);
 #define SPI5_NCS_GPIO_Port GPIOC
 #define B1_USER_Pin GPIO_PIN_0
 #define B1_USER_GPIO_Port GPIOA
-#define HCSR04_TRIG_Pin GPIO_PIN_2
-#define HCSR04_TRIG_GPIO_Port GPIOA
 #define BUZZER_Pin GPIO_PIN_4
 #define BUZZER_GPIO_Port GPIOC
+#define HCSR04_TRIG_Pin GPIO_PIN_2
+#define HCSR04_TRIG_GPIO_Port GPIOG
+#define HCSR04_ECHO_Pin GPIO_PIN_3
+#define HCSR04_ECHO_GPIO_Port GPIOG
+#define HCSR04_ECHO_EXTI_IRQn EXTI3_IRQn
 #define LED3_SCAN_Pin GPIO_PIN_13
 #define LED3_SCAN_GPIO_Port GPIOG
 #define LED4_ALERT_Pin GPIO_PIN_14
 #define LED4_ALERT_GPIO_Port GPIOG
+#define SERVO_PWM_Pin GPIO_PIN_4
+#define SERVO_PWM_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
